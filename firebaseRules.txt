@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  function userIsAuthenticted(){
+  	return request.auth != null;
+  }
+  //security rule for group collection ('posts')
+    match /{path=**}/posts/{postId} {
+      allow read, write: if userIsAuthenticted();
+    }
+    match /users/{userId}{
+    	allow read, write: if userIsAuthenticted();
+    }
+  }
+}
