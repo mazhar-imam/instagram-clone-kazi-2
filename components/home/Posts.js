@@ -49,9 +49,9 @@ const Posts = ({ post }) => {
           ? arrayUnion(auth.currentUser.email)
           : arrayRemove(auth.currentUser.email),
       });
-      console.log("Like Added Succesfully");
+      console.log("Like Updated Succesfully");
     } catch (err) {
-      console.log("Error Updating Like");
+      console.log("Error Updating Like", err);
     }
   };
 
