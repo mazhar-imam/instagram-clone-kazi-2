@@ -24,6 +24,7 @@ import {
   arrayUnion,
   arrayRemove,
   orderBy,
+  getDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -64,4 +65,5 @@ export {
   arrayUnion,
   arrayRemove,
   orderBy,
+  getDoc,
 };

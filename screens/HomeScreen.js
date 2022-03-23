@@ -12,10 +12,43 @@ import Header from "../components/home/Header";
 import Posts from "../components/home/Posts";
 import Stories from "../components/home/Stories";
 import { POSTS } from "../data/posts";
-import { db, collectionGroup, onSnapshot, query, orderBy } from "../firebase";
+import {
+  db,
+  collectionGroup,
+  onSnapshot,
+  query,
+  orderBy,
+  auth,
+  getDoc,
+  doc,
+} from "../firebase";
 
 const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
+  const [icons, setIcons] = useState(bottomTabIcons);
+
+  const getProfilePicture = async () => {
+    const collRef = collection(db, "users");
+    const docRef = doc(collRef, auth.currentUser.email);
+    try {
+      const profilePicSnap = await getDoc(docRef);
+      const profile = profilePicSnap.data().profile_picture;
+      setIcons([
+        ...bottomTabIcons,
+        {
+          name: "Profile",
+          active: profile,
+          inactive: profile,
+        },
+      ]);
+    } catch (err) {
+      console.log("Error getting Profile pic from firebase ", err);
+    }
+  };
+
+  useEffect(() => {
+    getProfilePicture();
+  }, []);
 
   useEffect(() => {
     const collGroupRef = collectionGroup(db, "posts");
@@ -36,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
           ))}
         </ScrollView>
       </View>
-      <BottomTabs icons={bottomTabIcons} />
+      <BottomTabs icons={icons} />
     </SafeAreaView>
   );
 };
